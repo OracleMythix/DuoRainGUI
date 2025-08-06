@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DuoRain GUI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      font-family: 'Noto Sans', sans-serif;
+      background: linear-gradient(135deg, #fcb045 0%, #00d2ff 50%, #2e3192 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: start;
+      color: white;
+    }
+
+    .logo-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 40px;
+      gap: 20px;
+    }
+
+    .logo-wrapper img {
+      width: 120px;
+      height: auto;
+    }
+
+    .title-text {
+      font-size: 100px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .duo {
+      color: white;
+    }
+
+    .rain {
+      background: linear-gradient(90deg, #005bea, #002e8a);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .button-container {
+      margin-top: 30px;
+      display: flex;
+      gap: 20px;
+    }
+
+    .farm-button {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 20px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 12px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      backdrop-filter: blur(6px);
+      transition: all 0.3s ease;
+    }
+
+    .farm-button:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .farm-button img {
+      width: 24px;
+      height: 24px;
+    }
+
+    .input-container {
+      margin-top: 30px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 20px;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      animation: fadeIn 0.5s ease;
+      backdrop-filter: blur(8px);
+    }
+
+    .input-container h3 {
+      margin: 0;
+      font-size: 20px;
+      background: linear-gradient(90deg, #005bea, #002e8a);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .input-container input {
+      margin-top: 10px;
+      padding: 10px;
+      border: none;
+      border-radius: 10px;
+      width: 200px;
+      font-size: 16px;
+    }
+
+    .input-container button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .progress-container {
+      margin-top: 30px;
+      width: 60%;
+      height: 24px;
+      background-color: rgba(255, 255, 255, 0.15);
+      border-radius: 20px;
+      overflow: hidden;
+      display: none;
+      position: relative;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      border-radius: 20px;
+      background: linear-gradient(to right, #005bea, #002e8a);
+      transition: width 0.5s ease-in-out;
+    }
+
+    .progress-info {
+      position: absolute;
+      left: 10px;
+      top: -30px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="logo-wrapper">
+    <img src="https://raw.githubusercontent.com/OracleMythix/DuoRainGUI/a1362aac2eeeeb20946b7e4a06f56d60b66aef5b/assets/rain-thunder-cloud.png" alt="cloud">
+    <div class="title-text">
+      <span class="duo">Duo</span><span class="rain">Rain</span>
+    </div>
+    <img src="https://raw.githubusercontent.com/OracleMythix/DuoRainGUI/a1362aac2eeeeb20946b7e4a06f56d60b66aef5b/assets/rain-thunder-cloud.png" alt="cloud">
+  </div>
+
+  <div class="button-container">
+    <div class="farm-button" onclick="showInput('xp')">
+      <img src="https://raw.githubusercontent.com/OracleMythix/DuoRainGUI/main/assets/xp.svg" alt="XP">
+      XP Farm
+    </div>
+    <div class="farm-button" onclick="showInput('gems')">
+      <img src="https://raw.githubusercontent.com/OracleMythix/DuoRainGUI/main/assets/gems.svg" alt="Gems">
+      Gem Farm
+    </div>
+    <div class="farm-button" onclick="showInput('streak')">
+      <img src="https://raw.githubusercontent.com/OracleMythix/DuoRainGUI/main/assets/streak.svg" alt="Streak">
+      Streak Farm
+    </div>
+  </div>
+
+  <div class="input-container" id="inputBox">
+    <h3 id="inputPrompt">How many loops?</h3>
+    <input type="number" id="loopInput" placeholder="Enter a number...">
+    <button onclick="startFarm()">Start</button>
+  </div>
+
+  <div class="progress-container" id="progressBox">
+    <div class="progress-info" id="progressInfo">0 loops done at 0/s</div>
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+
+  <script>
+    let currentMode = "";
+    function showInput(mode) {
+      currentMode = mode;
+      const box = document.getElementById("inputBox");
+      const prompt = document.getElementById("inputPrompt");
+      if (mode === "streak") {
+        prompt.innerText = "How many days?";
+      } else {
+        prompt.innerText = "How many loops?";
+      }
+      box.style.display = "flex";
+    }
+
+    function startFarm() {
+      const loops = parseInt(document.getElementById("loopInput").value);
+      const progress = document.getElementById("progressBar");
+      const info = document.getElementById("progressInfo");
+      const container = document.getElementById("progressBox");
+
+      container.style.display = "block";
+      let done = 0;
+      const startTime = Date.now();
+
+      const interval = setInterval(() => {
+        if (done >= loops) {
+          clearInterval(interval);
+          return;
+        }
+        done++;
+        const percent = (done / loops) * 100;
+        progress.style.width = percent + "%";
+
+        const elapsed = (Date.now() - startTime) / 1000;
+        const rate = (done / elapsed).toFixed(2);
+        info.innerText = `${done} ${currentMode === 'streak' ? 'days' : 'loops'} done at ${rate}/s`;
+      }, 100);
+    }
+  </script>
+</body>
+</html>
