@@ -9,7 +9,7 @@
       margin: 0;
       padding: 0;
       font-family: "Noto Sans", sans-serif;
-      background: linear-gradient(135deg, #2e3192, #fcb045, #00d2ff);
+      background: linear-gradient(to top right, #2e3192, #fcb045, #00d2ff);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -54,7 +54,7 @@
       gap: 10px;
       font-size: 20px;
       font-weight: bold;
-      padding: 12px 24px;
+      padding: 10px 20px;
       background: rgba(255,255,255,0.08);
       border: 2px solid rgba(255,255,255,0.2);
       border-radius: 12px;
@@ -71,8 +71,8 @@
       -webkit-text-fill-color: transparent;
     }
     .farm-button img {
-      width: 28px;
-      height: 28px;
+      width: 24px;
+      height: 24px;
     }
     .dropdown {
       margin-top: 30px;
@@ -145,27 +145,28 @@
       to { opacity: 1; transform: translateY(0); }
     }
   </style>
+  <script src="qrc:///qtwebchannel/qwebchannel.js"></script>
 </head>
 <body>
   <div class="logo-container">
-    <img src="https://raw.githubusercontent.com/OracleMythix/DuoRainGUI/a1362aac2eeeeb20946b7e4a06f56d60b66aef5b/assets/rain-thunder-cloud.png" alt="cloud">
+    <img src="https://raw.githubusercontent.com/OracleMythix/DuoRainGUI/main/assets/rain-thunder-cloud.png" alt="cloud">
     <div class="logo-text">
       <span class="duo">Duo</span><span class="rain">Rain</span>
     </div>
-    <img src="https://raw.githubusercontent.com/OracleMythix/DuoRainGUI/a1362aac2eeeeb20946b7e4a06f56d60b66aef5b/assets/rain-thunder-cloud.png" alt="cloud">
+    <img src="https://raw.githubusercontent.com/OracleMythix/DuoRainGUI/main/assets/rain-thunder-cloud.png" alt="cloud">
   </div>
 
   <div class="button-group">
     <div class="farm-button" onclick="showDropdown('xp')">
-      <img src="https://raw.githubusercontent.com/OracleMythix/DuoRainGUI/21ba2eb06482f54d3391b56f369cf52004a171e1/assets/xp.svg" />
+      <img src="https://raw.githubusercontent.com/OracleMythix/DuoRainGUI/main/assets/xp.svg" />
       <span>XP Farm</span>
     </div>
     <div class="farm-button" onclick="showDropdown('gem')">
-      <img src="https://raw.githubusercontent.com/OracleMythix/DuoRainGUI/21ba2eb06482f54d3391b56f369cf52004a171e1/assets/gems.svg" />
+      <img src="https://raw.githubusercontent.com/OracleMythix/DuoRainGUI/main/assets/gems.svg" />
       <span>Gem Farm</span>
     </div>
     <div class="farm-button" onclick="showDropdown('streak')">
-      <img src="https://raw.githubusercontent.com/OracleMythix/DuoRainGUI/21ba2eb06482f54d3391b56f369cf52004a171e1/assets/streak.svg" />
+      <img src="https://raw.githubusercontent.com/OracleMythix/DuoRainGUI/main/assets/streak.svg" />
       <span>Streak Farm</span>
     </div>
   </div>
@@ -206,21 +207,27 @@
       document.getElementById("dropdown").style.display = "none";
       progress.style.display = "flex";
 
-      let current = 0;
-      const start = Date.now();
-      const total = value;
-      const interval = setInterval(() => {
-        if (current >= total) {
-          clearInterval(interval);
-        } else {
-          current++;
-          const elapsed = (Date.now() - start) / 1000;
-          const rate = (current / elapsed).toFixed(2);
-          info.innerText = `${current} ${mode === "streak" ? "days" : "loops"} at ${rate}/sec`;
-          fill.style.width = `${(current / total) * 100}%`;
-        }
-      }, 300);
+      if (window.backend && typeof window.backend.start === 'function') {
+        window.backend.start(mode, value);
+      }
     }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      if (typeof QWebChannel !== "undefined") {
+        new QWebChannel(qt.webChannelTransport, function(channel) {
+          window.backend = channel.objects.backend;
+
+          backend.updateProgress.connect(function(current, total, rate) {
+            const info = document.getElementById("progress-info");
+            const fill = document.getElementById("progress-fill");
+            info.innerText = `${current} ${mode === "streak" ? "days" : "loops"} at ${rate.toFixed(2)}/sec`;
+            fill.style.width = `${(current / total) * 100}%`;
+          });
+        });
+      } else {
+        console.error("QWebChannel failed to load.");
+      }
+    });
   </script>
 </body>
 </html>
