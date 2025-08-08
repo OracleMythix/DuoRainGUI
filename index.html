@@ -1,233 +1,629 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DuoRain GUI</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: "Noto Sans", sans-serif;
-      background: linear-gradient(to top right, #2e3192, #fcb045, #00d2ff);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      color: white;
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-    .logo-container {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 20px;
-      margin-top: 40px;
-    }
-    .logo-container img {
-      width: 150px;
-      height: auto;
-    }
-    .logo-text {
-      font-size: 100px;
-      font-weight: 900;
-      display: flex;
-      align-items: center;
-    }
-    .logo-text .duo {
-      color: white;
-    }
-    .logo-text .rain {
-      background: linear-gradient(to right, #005bea, #002e8a);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    .button-group {
-      margin-top: 40px;
-      display: flex;
-      gap: 30px;
-    }
-    .farm-button {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 20px;
-      font-weight: bold;
-      padding: 10px 20px;
-      background: rgba(255,255,255,0.08);
-      border: 2px solid rgba(255,255,255,0.2);
-      border-radius: 12px;
-      cursor: pointer;
-      transition: background 0.3s;
-      backdrop-filter: blur(10px);
-    }
-    .farm-button:hover {
-      background: rgba(255,255,255,0.15);
-    }
-    .farm-button span {
-      background: linear-gradient(to right, #005bea, #002e8a);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    .farm-button img {
-      width: 24px;
-      height: 24px;
-    }
-    .dropdown {
-      margin-top: 30px;
-      padding: 24px;
-      border-radius: 20px;
-      background: rgba(255,255,255,0.05);
-      backdrop-filter: blur(12px);
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      gap: 20px;
-      animation: fadeIn 0.5s ease forwards;
-    }
-    .dropdown h2 {
-      font-size: 22px;
-      margin: 0;
-      background: linear-gradient(to right, #005bea, #002e8a);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    .dropdown input {
-      padding: 10px;
-      font-size: 18px;
-      border-radius: 10px;
-      border: none;
-      background: rgba(255,255,255,0.2);
-      color: white;
-      width: 200px;
-      text-align: center;
-    }
-    .dropdown button {
-      padding: 10px 20px;
-      font-size: 16px;
-      font-weight: bold;
-      border: none;
-      border-radius: 10px;
-      background: #1cb0f6;
-      color: white;
-      cursor: pointer;
-    }
-    .progress-container {
-      display: none;
-      margin-top: 30px;
-      width: 80%;
-      max-width: 600px;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-    }
-    .progress-info {
-      align-self: flex-start;
-      font-size: 14px;
-      color: #ffffffbb;
-    }
-    .progress-bar {
-      width: 100%;
-      height: 24px;
-      background: rgba(255,255,255,0.1);
-      border-radius: 12px;
-      overflow: hidden;
-    }
-    .progress-bar-fill {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(to right, #005bea, #002e8a);
-      transition: width 0.3s ease-in-out;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-  </style>
-  <script src="qrc:///qtwebchannel/qwebchannel.js"></script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>DuoRain — Revamped</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Poppins:wght@600;800&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg1:#2e3192; --bg2:#fcb045; --bg3:#00d2ff;
+    --accent1:#005bea; --accent2:#002e8a;
+    --glass: rgba(255,255,255,0.08);
+    --glass-strong: rgba(255,255,255,0.12);
+    --muted: rgba(255,255,255,0.7);
+  }
+
+  /* animated diagonal gradient background */
+  html,body{
+    height:100%;
+    margin:0;
+  }
+  body{
+    font-family: "Inter", "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    background: linear-gradient(-45deg, var(--bg1), var(--bg2), var(--bg3), var(--bg1));
+    background-size: 400% 400%;
+    animation: gradientShift 24s ease infinite;
+    display:flex;
+    align-items:flex-start;
+    justify-content:center;
+    color: #fff;
+    min-height:100vh;
+    padding:36px 18px;
+    box-sizing:border-box;
+  }
+  @keyframes gradientShift {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+  }
+
+  /* central card */
+  .shell {
+    width:100%;
+    max-width:1100px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:22px;
+  }
+
+  /* logo row */
+  .logo-row {
+    display:flex;
+    align-items:center;
+    gap:18px;
+    margin-top:8px;
+  }
+  .logo-image {
+    width:120px;
+    height:120px;
+    flex:0 0 120px;
+    filter: drop-shadow(0 6px 18px rgba(0,0,0,0.25));
+  }
+  .title {
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .duo {
+    font-family:"Poppins",sans-serif;
+    font-size:56px;
+    font-weight:800;
+    letter-spacing:-1px;
+    color:#fff;
+    text-shadow:0 6px 18px rgba(0,0,0,0.25);
+  }
+  .rain {
+    font-family:"Poppins",sans-serif;
+    font-size:64px;
+    font-weight:800;
+    background: linear-gradient(to right, var(--accent1), var(--accent2));
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    position:relative;
+    transform:translateY(-2px);
+  }
+  /* small shimmer over Rain */
+  .rain::after{
+    content:"";
+    position:absolute;
+    left:-40%;
+    top:0;
+    width:40%;
+    height:100%;
+    background:linear-gradient(90deg, rgba(255,255,255,0.0), rgba(255,255,255,0.18), rgba(255,255,255,0.0));
+    transform:skewX(-20deg);
+    animation: shimmer 4s ease-in-out infinite;
+    pointer-events:none;
+    opacity:0.9;
+  }
+  @keyframes shimmer{
+    0%{left:-40%}
+    50%{left:140%}
+    100%{left:-40%}
+  }
+
+  /* top control row: menu + spacer */
+  .control-row {
+    width:100%;
+    display:flex;
+    justify-content:flex-end;
+    align-items:center;
+  }
+  .menu-btn {
+    border: none;
+    background: rgba(255,255,255,0.06);
+    color:white;
+    padding:10px 14px;
+    border-radius:12px;
+    font-weight:600;
+    cursor:pointer;
+    backdrop-filter: blur(6px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+    transition: transform .18s cubic-bezier(.2,.9,.2,1), box-shadow .2s;
+  }
+  .menu-btn:hover{ transform: translateY(-3px); box-shadow: 0 10px 22px rgba(0,0,0,0.32); }
+  .menu-btn:active{ transform: translateY(0); }
+
+  /* main content card (glass) */
+  .card {
+    width:100%;
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+    border-radius:20px;
+    padding:28px;
+    box-sizing:border-box;
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+    border: 1px solid rgba(255,255,255,0.06);
+    box-shadow: 0 12px 40px rgba(2,6,23,0.35);
+    backdrop-filter: blur(8px);
+  }
+
+  /* button group */
+  .button-group {
+    display:flex;
+    gap:18px;
+    align-items:center;
+    justify-content:center;
+  }
+  .farm-button {
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:14px 18px;
+    border-radius:12px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.06);
+    cursor:pointer;
+    transition: transform .16s cubic-bezier(.2,.9,.2,1), box-shadow .16s;
+    user-select:none;
+    min-width:160px;
+    justify-content:center;
+    font-weight:700;
+    letter-spacing:0.2px;
+  }
+  .farm-button img{ width:26px; height:26px; filter: drop-shadow(0 6px 14px rgba(0,0,0,0.25)); }
+  .farm-button:hover{ transform: translateY(-6px); box-shadow: 0 18px 40px rgba(0,0,0,0.35); background: rgba(255,255,255,0.06); }
+  .farm-button:active{ transform: translateY(-2px); }
+
+  /* right-floating small-back button (appears in submenu) */
+  .back-btn {
+    position: absolute;
+    left:20px;
+    top:20px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:8px 12px;
+    border-radius:10px;
+    background: rgba(0,0,0,0.18);
+    color:white;
+    border:1px solid rgba(255,255,255,0.06);
+    cursor:pointer;
+    transform: translateX(-12px);
+    opacity:0;
+    transition: transform .32s ease, opacity .2s;
+    z-index:40;
+  }
+  .back-btn.visible { transform: translateX(0); opacity:1; }
+
+  /* dropdown / forms area (glass) */
+  .panel {
+    display:flex;
+    gap:14px;
+    align-items:center;
+    justify-content:center;
+    padding:18px;
+    border-radius:14px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border: 1px solid rgba(255,255,255,0.04);
+    width:100%;
+    box-sizing:border-box;
+    transition: transform .28s cubic-bezier(.2,.9,.2,1), opacity .2s ease;
+  }
+
+  /* fancy input */
+  .input-wrap{
+    position:relative;
+    width:220px;
+  }
+  .input-wrap input{
+    width:100%;
+    padding:12px 14px 12px 44px;
+    border-radius:12px;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.06);
+    color:white;
+    outline:none;
+    font-weight:600;
+    transition: box-shadow .18s, transform .12s;
+  }
+  .input-wrap input::placeholder{ color: rgba(255,255,255,0.65); font-weight:500; }
+  .input-wrap input:focus{ box-shadow: 0 6px 26px rgba(28,176,246,0.12); border-color: rgba(28,176,246,0.9); transform: translateY(-2px); }
+  .input-icon{
+    position:absolute;
+    left:12px;
+    top:50%;
+    transform:translateY(-50%);
+    width:20px; height:20px;
+    opacity:0.95;
+    filter: drop-shadow(0 6px 10px rgba(0,0,0,0.25));
+  }
+
+  .start-btn {
+    padding:10px 18px;
+    border-radius:10px;
+    border:none;
+    background: linear-gradient(90deg,#1cb0f6,#006edc);
+    color:white;
+    font-weight:700;
+    cursor:pointer;
+    transition: transform .14s, box-shadow .18s;
+  }
+  .start-btn:hover{ transform: translateY(-4px); box-shadow: 0 14px 30px rgba(0,110,220,0.28); }
+
+  /* menu overlay (animated) */
+  .menu-overlay {
+    position:fixed;
+    inset:0;
+    display:flex;
+    align-items:flex-start;
+    justify-content:center;
+    pointer-events:none;
+  }
+  .menu-sheet {
+    margin-top:84px;
+    width:420px;
+    max-width:90%;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-radius:16px;
+    border:1px solid rgba(255,255,255,0.06);
+    padding:18px;
+    pointer-events:auto;
+    box-shadow: 0 30px 90px rgba(2,6,23,0.5);
+    transform-origin: top center;
+    transform: translateY(-18px) scale(.98);
+    opacity:0;
+    transition: transform .28s cubic-bezier(.2,.9,.2,1), opacity .28s;
+  }
+  .menu-sheet.visible { transform: translateY(0) scale(1); opacity:1; }
+
+  .menu-item {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    padding:12px 14px;
+    border-radius:10px;
+    margin-bottom:10px;
+    cursor:pointer;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.03);
+    transition: transform .12s, background .12s;
+  }
+  .menu-item:hover{ transform: translateX(8px); background: rgba(255,255,255,0.035); }
+
+  /* progress area */
+  .progress-area {
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+  .progress-meta{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-weight:700;
+    color:var(--muted);
+    font-size:14px;
+  }
+  .progress-meta .label {
+    font-size:15px;
+    color:#fff;
+    font-weight:700;
+  }
+  .progress-meta .sub {
+    font-size:13px;
+    color: rgba(255,255,255,0.78);
+    font-weight:600;
+  }
+  .progress-bar {
+    position:relative;
+    height:18px;
+    width:100%;
+    border-radius:999px;
+    background: rgba(255,255,255,0.06);
+    overflow:hidden;
+  }
+  /* animated gradient stripe inside the fill */
+  .progress-fill {
+    position:absolute;
+    left:0; top:0; bottom:0;
+    width:0%;
+    border-radius:999px;
+    background: linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+    box-shadow: 0 8px 30px rgba(0,0,0,0.25) inset;
+    transition: width 420ms cubic-bezier(.2,.9,.2,1), box-shadow .2s;
+  }
+  .progress-fill::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background: linear-gradient(270deg, rgba(255,255,255,0.06), rgba(255,255,255,0.002));
+    mix-blend-mode: overlay;
+  }
+  /* moving glossy stripes over the fill */
+  .progress-fill .stripes{
+    position:absolute;
+    inset:0;
+    background: repeating-linear-gradient(
+      -45deg,
+      rgba(255,255,255,0.06) 0px,
+      rgba(255,255,255,0.02) 8px,
+      rgba(255,255,255,0.00) 16px
+    );
+    transform: translateX(0);
+    animation: stripeMove 3s linear infinite;
+    opacity:0.55;
+  }
+  @keyframes stripeMove{
+    from{ transform: translateX(0); }
+    to{ transform: translateX(-32px); }
+  }
+
+  /* tiny footer */
+  .foot {
+    width:100%;
+    display:flex;
+    justify-content:center;
+    color: rgba(255,255,255,0.6);
+    font-size:13px;
+    padding-top:8px;
+  }
+
+  /* responsive tweaks */
+  @media (max-width:720px){
+    .logo-image{ width:92px; height:92px; }
+    .duo{ font-size:36px; }
+    .rain{ font-size:44px; }
+    .button-group{ flex-direction:column; gap:12px; }
+  }
+</style>
 </head>
 <body>
-  <div class="logo-container">
-    <img src="assets/rain-thunder-cloud.png" alt="cloud">
-    <div class="logo-text">
-      <span class="duo">Duo</span><span class="rain">Rain</span>
+  <div class="shell">
+    <div class="control-row">
+      <button class="menu-btn" id="menuBtn">☰ Menu</button>
     </div>
-    <img src="assets/rain-thunder-cloud.png" alt="cloud">
+
+    <div style="position:relative; width:100%;">
+      <button class="back-btn" id="backBtn" title="Back">← Back</button>
+
+      <div class="logo-row">
+        <img class="logo-image" src="assets/rain-thunder-cloud.png" alt="cloud">
+        <div class="title" aria-hidden="true">
+          <div class="duo">Duo</div>
+          <div class="rain">Rain</div>
+        </div>
+        <img class="logo-image" src="assets/rain-thunder-cloud.png" alt="cloud">
+      </div>
+
+      <div class="card" id="homeCard" role="region" aria-label="Main controls">
+        <div style="display:flex;flex-direction:column;gap:14px;align-items:center;">
+          <div class="button-group" role="tablist" aria-label="Farming actions">
+            <div class="farm-button" data-mode="xp" id="xpBtn">
+              <img src="assets/xp.svg" alt="">
+              XP Farm
+            </div>
+            <div class="farm-button" data-mode="gem" id="gemBtn">
+              <img src="assets/gems.svg" alt="">
+              Gem Farm
+            </div>
+            <div class="farm-button" data-mode="streak" id="streakBtn">
+              <img src="assets/streak.svg" alt="">
+              Streak Farm
+            </div>
+          </div>
+
+          <div class="panel" id="inputPanel" aria-hidden="false">
+            <div class="input-wrap" style="margin-right:12px;">
+              <img class="input-icon" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' fill='white' viewBox='0 0 24 24'><path d='M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 14.5v-5h-2v5h2zm0-7.5V6h-2v3H11z'/></svg>" alt="">
+              <input id="amount" type="number" min="1" value="10" placeholder="Enter loops / days">
+            </div>
+            <button class="start-btn" id="startBtn">Start Farming</button>
+          </div>
+        </div>
+
+        <div style="width:100%; margin-top:6px;">
+          <div class="progress-area">
+            <div class="progress-meta">
+              <div class="label" id="progressLabel">0 / 0</div>
+              <div class="sub" id="progressSub">0.00 /sec</div>
+            </div>
+
+            <div class="progress-bar" aria-hidden="false">
+              <div class="progress-fill" id="progressFill">
+                <div class="stripes"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> <!-- card -->
+    </div> <!-- relative container -->
+
+    <div class="foot">DuoRain • Automated tools — use responsibly</div>
   </div>
 
-  <div class="button-group">
-    <div class="farm-button" onclick="showDropdown('xp')">
-      <img src="assets/xp.svg" alt="XP Icon">
-      <span>XP Farm</span>
-    </div>
-    <div class="farm-button" onclick="showDropdown('gem')">
-      <img src="assets/gems.svg" alt="Gems Icon">
-      <span>Gem Farm</span>
-    </div>
-    <div class="farm-button" onclick="showDropdown('streak')">
-      <img src="assets/streak.svg" alt="Streak Icon">
-      <span>Streak Farm</span>
-    </div>
-  </div>
+  <!-- menu overlay -->
+  <div class="menu-overlay" id="menuOverlay" aria-hidden="true">
+    <div class="menu-sheet" id="menuSheet" role="dialog" aria-modal="true" aria-label="Menu">
+      <div class="menu-item" id="menuFarms">
+        <div style="display:flex;gap:12px;align-items:center">
+          <div style="width:36px;height:36px;border-radius:8px;background:linear-gradient(90deg,#1cb0f6,#006edc);display:flex;align-items:center;justify-content:center;font-weight:800">F</div>
+          <div style="font-weight:700">Farms</div>
+        </div>
+        <div style="color:rgba(255,255,255,0.6)">XP • Gems • Streak</div>
+      </div>
 
-  <div class="dropdown" id="dropdown">
-    <h2 id="question-text">How many?</h2>
-    <input type="number" id="amount" placeholder="Enter amount" />
-    <button onclick="startFarming()">Start</button>
-  </div>
+      <div class="menu-item" id="menuOther">
+        <div style="display:flex;gap:12px;align-items:center">
+          <div style="width:36px;height:36px;border-radius:8px;background:linear-gradient(90deg,#ffd36b,#ff7a7a);display:flex;align-items:center;justify-content:center;font-weight:800">+</div>
+          <div style="font-weight:700">Extras</div>
+        </div>
+        <div style="color:rgba(255,255,255,0.6)">Future features</div>
+      </div>
 
-  <div class="progress-container" id="progress">
-    <div class="progress-info" id="progress-info">0 loops/day at 0.0 per second</div>
-    <div class="progress-bar">
-      <div class="progress-bar-fill" id="progress-fill"></div>
+      <div style="height:8px"></div>
+      <div style="display:flex;gap:10px;justify-content:flex-end">
+        <button class="menu-btn" id="closeMenu">Close</button>
+      </div>
     </div>
   </div>
 
-  <script>
-    let mode = "";
-    function showDropdown(selectedMode) {
-      mode = selectedMode;
-      const dropdown = document.getElementById("dropdown");
-      const question = document.getElementById("question-text");
-      if (mode === "streak") {
-        question.innerText = "How many days do you want to farm?";
-      } else {
-        question.innerText = "How many loops do you want to farm?";
-      }
-      dropdown.style.display = "flex";
-      document.getElementById("progress").style.display = "none";
-    }
+<script src="qrc:///qtwebchannel/qwebchannel.js"></script>
+<script>
+  // UI state & helpers
+  const menuBtn = document.getElementById('menuBtn');
+  const menuOverlay = document.getElementById('menuOverlay');
+  const menuSheet = document.getElementById('menuSheet');
+  const closeMenu = document.getElementById('closeMenu');
+  const menuFarms = document.getElementById('menuFarms');
+  const backBtn = document.getElementById('backBtn');
 
-    function startFarming() {
-      const value = parseInt(document.getElementById("amount").value);
-      const progress = document.getElementById("progress");
-      const fill = document.getElementById("progress-fill");
-      const info = document.getElementById("progress-info");
-      document.getElementById("dropdown").style.display = "none";
-      progress.style.display = "flex";
+  const xpBtn = document.getElementById('xpBtn');
+  const gemBtn = document.getElementById('gemBtn');
+  const streakBtn = document.getElementById('streakBtn');
+  const startBtn = document.getElementById('startBtn');
+  const amountInput = document.getElementById('amount');
 
-      if (window.backend && typeof window.backend.start === 'function') {
-        window.backend.start(mode, value);
-      }
-    }
+  const progressFill = document.getElementById('progressFill');
+  const progressLabel = document.getElementById('progressLabel');
+  const progressSub = document.getElementById('progressSub');
 
-    document.addEventListener("DOMContentLoaded", () => {
-      if (typeof QWebChannel !== "undefined") {
-        new QWebChannel(qt.webChannelTransport, function(channel) {
-          window.backend = channel.objects.backend;
+  let currentMode = null;
+  let jsBackend = null;
 
-          backend.updateProgress.connect(function(current, total, rate) {
-            const info = document.getElementById("progress-info");
-            const fill = document.getElementById("progress-fill");
-            info.innerText = `${current} ${mode === "streak" ? "days" : "loops"} at ${rate.toFixed(2)}/sec`;
-            fill.style.width = `${(current / total) * 100}%`;
-          });
+  // menu toggles
+  menuBtn.addEventListener('click', ()=> {
+    menuOverlay.style.pointerEvents = 'auto';
+    menuSheet.classList.add('visible');
+    menuOverlay.setAttribute('aria-hidden','false');
+  });
+  closeMenu.addEventListener('click', ()=> {
+    menuSheet.classList.remove('visible');
+    setTimeout(()=> menuOverlay.style.pointerEvents='none', 300);
+    menuOverlay.setAttribute('aria-hidden','true');
+  });
+
+  // open Farms submenu (animated transition)
+  menuFarms.addEventListener('click', ()=> {
+    // slide out menu and show farms as small overlay using same menu sheet area
+    menuSheet.classList.remove('visible');
+    setTimeout(()=> {
+      // change content to farms menu
+      menuSheet.innerHTML = `
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+          <div style="font-weight:800">Farms</div>
+          <div style="color:rgba(255,255,255,0.6)">XP • Gems • Streak</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div class="menu-item" id="m_xp"><div style="font-weight:700">XP Farm</div><div style="color:rgba(255,255,255,0.6)">Loop XP story</div></div>
+          <div class="menu-item" id="m_gem"><div style="font-weight:700">Gem Farm</div><div style="color:rgba(255,255,255,0.6)">Redeem rewards</div></div>
+          <div class="menu-item" id="m_streak"><div style="font-weight:700">Streak Farm</div><div style="color:rgba(255,255,255,0.6)">Simulate practice</div></div>
+        </div>
+        <div style="height:8px"></div>
+        <div style="display:flex;gap:10px;justify-content:flex-end">
+          <button class="menu-btn" id="menuBackInline">Back</button>
+        </div>
+      `;
+      // show the sheet again
+      menuSheet.classList.add('visible');
+      // wire the new inline buttons (delegation)
+      setTimeout(()=> {
+        document.getElementById('m_xp').addEventListener('click', ()=> { openSubFromMenu('xp'); });
+        document.getElementById('m_gem').addEventListener('click', ()=> { openSubFromMenu('gem'); });
+        document.getElementById('m_streak').addEventListener('click', ()=> { openSubFromMenu('streak'); });
+        document.getElementById('menuBackInline').addEventListener('click', ()=> {
+          // restore original menu
+          menuSheet.classList.remove('visible');
+          setTimeout(()=> location.reload(), 220);
         });
+      }, 80);
+    }, 260);
+  });
+
+  function openSubFromMenu(mode){
+    // hide menu and show home in the selected mode
+    menuSheet.classList.remove('visible');
+    setTimeout(()=> menuOverlay.style.pointerEvents='none', 300);
+    currentMode = mode;
+    // show a visual highlight on the button
+    document.querySelectorAll('.farm-button').forEach(b=> b.style.transform='translateY(0)');
+    const btn = document.querySelector(`.farm-button[data-mode="${mode}"]`);
+    if(btn) btn.style.transform='translateY(-8px) scale(1.02)';
+    showBack();
+    // set amount placeholder text to be contextual
+    amountInput.placeholder = mode === 'streak' ? 'Enter days to farm' : 'Enter loops to farm';
+  }
+
+  function showBack(){
+    backBtn.classList.add('visible');
+  }
+  backBtn.addEventListener('click', ()=> {
+    // hide back and reset UI
+    backBtn.classList.remove('visible');
+    currentMode = null;
+    amountInput.placeholder = 'Enter loops / days';
+    document.querySelectorAll('.farm-button').forEach(b=> b.style.transform='translateY(0)');
+  });
+
+  // clicking main farm buttons sets current mode (quick)
+  xpBtn.addEventListener('click', ()=> { currentMode='xp'; showBack(); amountInput.placeholder='Enter loops to farm';});
+  gemBtn.addEventListener('click', ()=> { currentMode='gem'; showBack(); amountInput.placeholder='Enter loops to farm';});
+  streakBtn.addEventListener('click', ()=> { currentMode='streak'; showBack(); amountInput.placeholder='Enter days to farm';});
+
+  // start button
+  startBtn.addEventListener('click', ()=> {
+    const value = Math.max(1, parseInt(amountInput.value) || 1);
+    if(!currentMode){
+      // small shake to indicate user must choose mode
+      startBtn.animate([{ transform:'translateX(-6px)'},{ transform:'translateX(6px)'},{ transform:'translateX(0)'}], { duration:300 });
+      return;
+    }
+    // call the backend slot
+    try{
+      if(jsBackend && typeof jsBackend.start === 'function'){
+        jsBackend.start(currentMode, value);
       } else {
-        console.error("QWebChannel failed to load.");
+        console.warn('backend not connected yet');
+      }
+    }catch(e){ console.error(e); }
+  });
+
+  // progress update handler
+  function handleProgress(current, total, rate){
+    const pct = (total && current) ? Math.min(100, Math.round((current/total)*100)) : 0;
+    progressFill.style.width = pct + '%';
+    progressLabel.textContent = `${current} / ${total}`;
+    progressSub.textContent = `${rate.toFixed(2)} /sec`;
+    // small glow when progress increases
+    progressFill.style.boxShadow = '0 8px 40px rgba(0,110,220,0.18) inset';
+    clearTimeout(window._glowT);
+    window._glowT = setTimeout(()=> progressFill.style.boxShadow = '0 8px 30px rgba(0,0,0,0.25) inset', 380);
+  }
+
+  // Wire QWebChannel
+  document.addEventListener("DOMContentLoaded", ()=>{
+    if(typeof QWebChannel === 'undefined'){
+      console.warn('QWebChannel not available (page may be opened in normal browser).');
+      return;
+    }
+    new QWebChannel(qt.webChannelTransport, function(channel){
+      jsBackend = channel.objects.backend;
+      // ensure signature: current, total, rate
+      if(jsBackend && jsBackend.updateProgress){
+        jsBackend.updateProgress.connect(function(current, total, rate){
+          handleProgress(current, total, rate);
+        });
       }
     });
-  </script>
+  });
+
+  // small: allow clicking farm button to auto-focus amount and visually hint
+  document.querySelectorAll('.farm-button').forEach(b=>{
+    b.addEventListener('click', ()=> {
+      amountInput.focus();
+    });
+  });
+
+</script>
 </body>
 </html>
