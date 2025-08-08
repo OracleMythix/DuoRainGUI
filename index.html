@@ -13,22 +13,16 @@
     --bg1:#2e3192; --bg2:#fcb045; --bg3:#00d2ff;
     --accent1:#005bea; --accent2:#002e8a;
     --glass: rgba(255,255,255,0.08);
-    --glass-strong: rgba(255,255,255,0.14);
-    --muted: rgba(255,255,255,0.72);
     --glass-border: rgba(255,255,255,0.06);
+    --muted: rgba(255,255,255,0.72);
   }
-
-  /* animated diagonal gradient background */
   html,body{ height:100%; margin:0; }
   body{
-    font-family: "Inter", "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-    -webkit-font-smoothing:antialiased;
-    -moz-osx-font-smoothing:grayscale;
+    font-family: "Inter", "Poppins", system-ui;
     background: linear-gradient(-45deg, var(--bg1), var(--bg2), var(--bg3), var(--bg1));
     background-size: 400% 400%;
     animation: gradientShift 22s linear infinite;
     display:flex;
-    align-items:flex-start;
     justify-content:center;
     color: #fff;
     min-height:100vh;
@@ -40,406 +34,171 @@
     50%{background-position:100% 50%}
     100%{background-position:0% 50%}
   }
-
-  /* central card */
   .shell {
-    width:100%;
     max-width:1100px;
     display:flex;
     flex-direction:column;
     align-items:center;
     gap:22px;
+    width:100%;
   }
-
-  /* logo row */
   .logo-row {
-    display:flex;
-    align-items:center;
-    gap:18px;
-    margin-top:8px;
-    pointer-events: none;
+    display:flex;align-items:center;gap:18px;margin-top:8px;pointer-events:none;
   }
   .logo-image {
-    width:118px;
-    height:118px;
-    flex:0 0 118px;
+    width:118px;height:118px;flex:0 0 118px;
     filter: drop-shadow(0 10px 30px rgba(0,0,0,0.35));
     border-radius: 12px;
     background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
     padding: 12px;
-    box-sizing: border-box;
   }
   .title { display:flex; align-items:center; gap:10px; }
   .duo {
-    font-family:"Poppins",sans-serif;
-    font-size:48px;
-    font-weight:800;
-    letter-spacing:-1px;
-    color:#fff;
+    font-family:"Poppins",sans-serif;font-size:48px;font-weight:800;color:#fff;
     text-shadow:0 8px 24px rgba(0,0,0,0.30);
   }
   .rain {
-    font-family:"Poppins",sans-serif;
-    font-size:58px;
-    font-weight:800;
+    font-family:"Poppins",sans-serif;font-size:58px;font-weight:800;
     background: linear-gradient(90deg, var(--accent1), var(--accent2));
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
-    position:relative;
-    transform:translateY(-2px);
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+    position:relative;transform:translateY(-2px);
   }
-  /* shimmer over Rain */
   .rain::after{
-    content:"";
-    position:absolute;
-    left:-50%;
-    top:0;
-    width:40%;
-    height:100%;
-    background:linear-gradient(90deg, rgba(255,255,255,0.0), rgba(255,255,255,0.18), rgba(255,255,255,0.0));
-    transform:skewX(-20deg);
-    animation: shimmer 5s ease-in-out infinite;
-    pointer-events:none;
-    opacity:0.95;
+    content:"";position:absolute;left:-50%;top:0;width:40%;height:100%;
+    background:linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
+    transform:skewX(-20deg);animation: shimmer 5s ease-in-out infinite;
   }
   @keyframes shimmer{ 0%{left:-50%} 50%{left:140%} 100%{left:-50%} }
-
-  /* control row (left empty for balance) */
-  .control-row { width:100%; display:flex; justify-content:flex-end; align-items:center; }
-
-  /* main card (glass) */
   .card {
-    width:100%;
     background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
     border-radius:22px;
     padding:28px;
-    box-sizing:border-box;
-    display:flex;
-    flex-direction:column;
-    gap:20px;
+    display:flex;flex-direction:column;gap:20px;
     border: 1px solid var(--glass-border);
     box-shadow: 0 20px 60px rgba(2,6,23,0.45);
     backdrop-filter: blur(10px);
+    width:100%;
+    box-sizing:border-box;
   }
-
-  /* farm buttons row */
   .button-group {
-    display:flex;
-    gap:18px;
-    align-items:center;
-    justify-content:center;
-    flex-wrap:wrap;
+    display:flex;gap:18px;flex-wrap:wrap;justify-content:center;
+    transition: opacity 0.4s ease, transform 0.4s ease;
   }
   .farm-button {
-    display:flex;
-    align-items:center;
-    gap:12px;
-    padding:14px 18px;
-    border-radius:12px;
-    background: rgba(255,255,255,0.035);
+    display:flex;align-items:center;gap:12px;padding:14px 18px;
+    border-radius:12px;background: rgba(255,255,255,0.035);
     border: 1px solid rgba(255,255,255,0.04);
-    cursor:pointer;
-    transition: transform .18s cubic-bezier(.2,.9,.2,1), box-shadow .18s, background .18s;
-    user-select:none;
-    min-width:160px;
-    justify-content:center;
-    font-weight:700;
-    letter-spacing:0.2px;
+    cursor:pointer;min-width:160px;justify-content:center;
+    font-weight:700;letter-spacing:0.2px;
+    transition: transform .18s, box-shadow .18s, background .18s;
   }
-  .farm-button img{ width:26px; height:26px; filter: drop-shadow(0 8px 20px rgba(0,0,0,0.35)); }
+  .farm-button img{ width:26px;height:26px; }
   .farm-button:hover{ transform: translateY(-6px); box-shadow: 0 20px 50px rgba(0,0,0,0.40); background: rgba(255,255,255,0.06); }
-  .farm-button:active{ transform: translateY(-2px); }
   .farm-button.selected{
     transform: translateY(-8px) scale(1.02);
     box-shadow: 0 26px 70px rgba(0,0,0,0.45);
     background: linear-gradient(90deg, rgba(28,176,246,0.12), rgba(0,94,200,0.08));
-    border: 1px solid rgba(28,176,246,0.25);
   }
-
-  /* back button (hidden by default) */
-  .back-btn {
-    position: absolute;
-    left:18px;
-    top:18px;
-    display:flex;
-    align-items:center;
-    gap:8px;
-    padding:8px 12px;
-    border-radius:10px;
-    background: rgba(0,0,0,0.20);
-    color:white;
-    border:1px solid rgba(255,255,255,0.06);
-    cursor:pointer;
-    transform: translateX(-12px);
-    opacity:0;
-    transition: transform .28s ease, opacity .18s;
-    z-index:40;
+  .panel, .progress-area {
+    opacity:0;pointer-events:none;transform: translateY(20px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
   }
-  .back-btn.visible { transform: translateX(0); opacity:1; }
-
-  /* input panel */
+  .panel.visible, .progress-area.visible {
+    opacity:1;pointer-events:auto;transform: translateY(0);
+  }
   .panel {
-    display:flex;
-    gap:14px;
-    align-items:center;
-    justify-content:center;
-    padding:18px;
-    border-radius:14px;
+    display:flex;gap:14px;align-items:center;justify-content:center;
+    padding:18px;border-radius:14px;
     background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
     border: 1px solid rgba(255,255,255,0.035);
-    width:100%;
-    box-sizing:border-box;
   }
-
   .input-wrap{ position:relative; width:260px; }
   .input-wrap input{
-    width:100%;
-    padding:12px 14px 12px 48px;
-    border-radius:12px;
-    border: 1px solid rgba(255,255,255,0.08);
-    background: rgba(255,255,255,0.06);
-    color:white;
-    outline:none;
-    font-weight:700;
-    font-size:15px;
-    transition: box-shadow .18s, transform .12s;
+    width:100%;padding:12px 14px 12px 48px;
+    border-radius:12px;border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.06);color:white;
+    font-weight:700;font-size:15px;
   }
-  .input-wrap input::placeholder{ color: rgba(255,255,255,0.65); font-weight:600; }
-  .input-wrap input:focus{ box-shadow: 0 10px 36px rgba(28,176,246,0.12); border-color: rgba(28,176,246,0.85); transform: translateY(-2px); }
   .input-icon{
-    position:absolute;
-    left:12px;
-    top:50%;
-    transform:translateY(-50%);
+    position:absolute;left:12px;top:50%;transform:translateY(-50%);
     width:22px; height:22px;
-    opacity:0.98;
-    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.35));
   }
-
   .start-btn {
-    padding:10px 18px;
-    border-radius:10px;
-    border:none;
+    padding:10px 18px;border-radius:10px;border:none;
     background: linear-gradient(90deg,#1cb0f6,#006edc);
-    color:white;
-    font-weight:800;
-    letter-spacing:0.3px;
-    cursor:pointer;
-    transition: transform .14s, box-shadow .18s, opacity .12s;
+    color:white;font-weight:800;cursor:pointer;
   }
-  .start-btn[disabled]{ opacity: 0.5; cursor: not-allowed; transform: none; }
-  .start-btn:hover:not([disabled]){ transform: translateY(-4px); box-shadow: 0 18px 40px rgba(0,110,220,0.28); }
-
-  /* progress area */
-  .progress-area { width:100%; display:flex; flex-direction:column; gap:12px; }
-  .progress-meta{ display:flex; justify-content:space-between; align-items:center; font-weight:700; color:var(--muted); font-size:14px; }
-  .progress-meta .label { font-size:15px; color:#fff; font-weight:800; letter-spacing:0.2px }
-  .progress-meta .sub { font-size:13px; color: rgba(255,255,255,0.82); font-weight:600; }
-
-  .progress-bar { position:relative; height:20px; width:100%; border-radius:999px; background: rgba(255,255,255,0.06); overflow:hidden; }
+  .progress-bar {
+    height:20px;width:100%;border-radius:999px;background: rgba(255,255,255,0.06);
+    overflow:hidden;
+  }
   .progress-fill {
-    position:absolute; left:0; top:0; bottom:0; width:0%;
-    border-radius:999px;
+    height:100%;width:0%;border-radius:999px;
     background: linear-gradient(90deg, rgba(0,110,220,0.85), rgba(28,176,246,0.9));
-    box-shadow: 0 10px 40px rgba(0,0,0,0.24) inset;
-    transition: width 420ms cubic-bezier(.2,.9,.2,1), box-shadow .2s;
-  }
-  .progress-fill .stripes{
-    position:absolute; inset:0;
-    background: repeating-linear-gradient(-45deg, rgba(255,255,255,0.06) 0px, rgba(255,255,255,0.02) 8px, transparent 16px);
-    animation: stripeMove 3s linear infinite;
-    opacity:0.45;
-  }
-  @keyframes stripeMove{ from{ transform: translateX(0);} to{ transform: translateX(-32px);} }
-
-  .progress-pulse { animation: pulse 420ms ease; }
-  @keyframes pulse { 0%{ transform: scaleX(1); } 50%{ transform: scaleX(1.02); } 100%{ transform: scaleX(1); } }
-
-  /* tiny footer */
-  .foot { width:100%; display:flex; justify-content:center; color: rgba(255,255,255,0.6); font-size:13px; padding-top:8px; }
-
-  /* responsive tweaks */
-  @media (max-width:720px){
-    .logo-image{ width:92px; height:92px; }
-    .duo{ font-size:36px; }
-    .rain{ font-size:44px; }
-    .button-group{ flex-direction:column; gap:12px; }
-    .input-wrap{ width:180px; }
+    transition: width 0.4s ease;
   }
 </style>
 </head>
 <body>
   <div class="shell">
-    <div class="control-row"></div>
+    <div class="logo-row">
+      <img class="logo-image" src="assets/rain-thunder-cloud.png">
+      <div class="title"><div class="duo">Duo</div><div class="rain">Rain</div></div>
+      <img class="logo-image" src="assets/rain-thunder-cloud.png">
+    </div>
 
-    <div style="position:relative; width:100%;">
-      <button class="back-btn" id="backBtn" title="Back">← Back</button>
-
-      <div class="logo-row" aria-hidden="true">
-        <img class="logo-image" src="assets/rain-thunder-cloud.png" alt="cloud">
-        <div class="title">
-          <div class="duo">Duo</div>
-          <div class="rain">Rain</div>
-        </div>
-        <img class="logo-image" src="assets/rain-thunder-cloud.png" alt="cloud">
+    <div class="card">
+      <div class="button-group" id="buttonGroup">
+        <div class="farm-button" data-mode="xp"><img src="assets/xp.svg">XP Farm</div>
+        <div class="farm-button" data-mode="gem"><img src="assets/gems.svg">Gem Farm</div>
+        <div class="farm-button" data-mode="streak"><img src="assets/streak.svg">Streak Farm</div>
       </div>
 
-      <div class="card" id="homeCard" role="region" aria-label="Main controls">
-        <div style="display:flex;flex-direction:column;gap:14px;align-items:center;">
-          <div class="button-group" role="tablist" aria-label="Farming actions">
-            <div class="farm-button" data-mode="xp" id="xpBtn" aria-pressed="false">
-              <img src="assets/xp.svg" alt="">
-              XP Farm
-            </div>
-            <div class="farm-button" data-mode="gem" id="gemBtn" aria-pressed="false">
-              <img src="assets/gems.svg" alt="">
-              Gem Farm
-            </div>
-            <div class="farm-button" data-mode="streak" id="streakBtn" aria-pressed="false">
-              <img src="assets/streak.svg" alt="">
-              Streak Farm
-            </div>
-          </div>
-
-          <div class="panel" id="inputPanel" aria-hidden="false">
-            <div class="input-wrap" style="margin-right:12px;">
-              <img class="input-icon" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' fill='white' viewBox='0 0 24 24'><path d='M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 14.5v-5h-2v5h2zm0-7.5V6h-2v3H11z'/></svg>" alt="">
-              <input id="amount" type="number" min="1" value="10" placeholder="Enter loops / days" />
-            </div>
-            <button class="start-btn" id="startBtn" title="Start">Start Farming</button>
-          </div>
+      <div class="panel" id="inputPanel">
+        <div class="input-wrap">
+          <img class="input-icon" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' fill='white' viewBox='0 0 24 24'><path d='M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 14.5v-5h-2v5h2zm0-7.5V6h-2v3H11z'/></svg>">
+          <input id="amount" type="number" min="1" value="10" placeholder="Enter loops / days" />
         </div>
+        <button class="start-btn" id="startBtn">Start Farming</button>
+      </div>
 
-        <div style="width:100%; margin-top:6px;">
-          <div class="progress-area">
-            <div class="progress-meta">
-              <div class="label" id="progressLabel">0 / 0</div>
-              <div class="sub" id="progressSub">0.00 /sec</div>
-            </div>
-
-            <div class="progress-bar" aria-hidden="false">
-              <div class="progress-fill" id="progressFill">
-                <div class="stripes"></div>
-              </div>
-            </div>
-          </div>
+      <div class="progress-area" id="progressArea">
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill"></div>
         </div>
-      </div> <!-- card -->
-    </div> <!-- relative container -->
-
-    <div class="foot">DuoRain • Automated tools — use responsibly</div>
+      </div>
+    </div>
   </div>
 
-<!-- QWebChannel for PySide6 in-app bridge -->
-<script src="qrc:///qtwebchannel/qwebchannel.js"></script>
 <script>
-  // Elements
-  const backBtn = document.getElementById('backBtn');
-  const xpBtn = document.getElementById('xpBtn');
-  const gemBtn = document.getElementById('gemBtn');
-  const streakBtn = document.getElementById('streakBtn');
-  const startBtn = document.getElementById('startBtn');
-  const amountInput = document.getElementById('amount');
+  const buttons = document.querySelectorAll('.farm-button');
+  const buttonGroup = document.getElementById('buttonGroup');
+  const inputPanel = document.getElementById('inputPanel');
+  const progressArea = document.getElementById('progressArea');
   const progressFill = document.getElementById('progressFill');
-  const progressLabel = document.getElementById('progressLabel');
-  const progressSub = document.getElementById('progressSub');
-
   let currentMode = null;
-  let jsBackend = null;
-  let lastProgress = 0;
 
-  // Utility: clear selection
-  function clearSelection(){
-    document.querySelectorAll('.farm-button').forEach(b=>{
-      b.classList.remove('selected');
-      b.setAttribute('aria-pressed','false');
-    });
-  }
-
-  // Farm button clicks -> set mode & visual hint
-  [xpBtn, gemBtn, streakBtn].forEach(btn=>{
-    btn.addEventListener('click', ()=> {
+  buttons.forEach(btn=>{
+    btn.addEventListener('click', ()=>{
       currentMode = btn.dataset.mode;
-      clearSelection();
+      buttons.forEach(b=>b.style.display='none');
+      btn.style.display='flex';
       btn.classList.add('selected');
-      btn.setAttribute('aria-pressed','true');
-      backBtn.classList.add('visible');
-      amountInput.placeholder = currentMode === 'streak' ? 'Enter days to farm' : 'Enter loops to farm';
-      amountInput.focus();
+      inputPanel.classList.add('visible');
     });
   });
 
-  // Back button -> reset
-  backBtn.addEventListener('click', ()=> {
-    currentMode = null;
-    clearSelection();
-    backBtn.classList.remove('visible');
-    amountInput.placeholder = 'Enter loops / days';
+  document.getElementById('startBtn').addEventListener('click', ()=>{
+    inputPanel.classList.remove('visible');
+    progressArea.classList.add('visible');
+
+    let progress = 0;
+    const interval = setInterval(()=>{
+      progress += 5;
+      if(progress>100){ clearInterval(interval); return; }
+      progressFill.style.width = progress + '%';
+    }, 200);
   });
-
-  // Start button -> call backend.start(mode, count)
-  startBtn.addEventListener('click', ()=> {
-    const value = Math.max(1, parseInt(amountInput.value) || 1);
-    if(!currentMode){
-      // quick shake to indicate mode missing
-      startBtn.animate([{ transform:'translateX(-6px)'},{ transform:'translateX(6px)'},{ transform:'translateX(0)'}], { duration:300 });
-      return;
-    }
-    if(window.backend && typeof window.backend.start === 'function'){
-      try { window.backend.start(currentMode, value); }
-      catch(e){ console.error('Failed to call backend.start:', e); }
-    } else {
-      console.warn('backend not connected (page opened in normal browser?)');
-    }
-  });
-
-  // Update progress from backend (current, total, rate)
-  function handleProgress(current, total, rate){
-    // protect against bad values
-    current = Number(current) || 0;
-    total = Number(total) || 0;
-    rate = Number(rate) || 0;
-
-    progressLabel.textContent = `${current} / ${total}`;
-    progressSub.textContent = `${rate.toFixed(2)} /sec`;
-
-    const pct = total > 0 ? Math.min(100, Math.round((current / total) * 100)) : 0;
-    progressFill.style.width = pct + '%';
-
-    // pulse animation when progress increases
-    if(current > lastProgress){
-      progressFill.classList.add('progress-pulse');
-      clearTimeout(window._pulseT);
-      window._pulseT = setTimeout(()=> progressFill.classList.remove('progress-pulse'), 420);
-    }
-    lastProgress = current;
-
-    // subtle glow reset
-    progressFill.style.boxShadow = '0 10px 40px rgba(0,0,0,0.24) inset';
-    clearTimeout(window._glowT);
-    window._glowT = setTimeout(()=> progressFill.style.boxShadow = '0 8px 30px rgba(0,0,0,0.25) inset', 600);
-  }
-
-  // QWebChannel wiring (works inside PySide6 QWebEngine)
-  document.addEventListener("DOMContentLoaded", ()=>{
-    if(typeof QWebChannel === 'undefined'){
-      console.info('QWebChannel not available (opening in browser). Backend calls will be disabled.');
-      return;
-    }
-    new QWebChannel(qt.webChannelTransport, function(channel){
-      jsBackend = channel.objects.backend;
-      window.backend = jsBackend;
-      if(jsBackend && jsBackend.updateProgress){
-        jsBackend.updateProgress.connect(function(current, total, rate){
-          // forwards to safe handler
-          handleProgress(current, total, rate);
-        });
-      }
-    });
-  });
-
-  // UX: clicking any farm button will focus the amount field
-  document.querySelectorAll('.farm-button').forEach(b => b.addEventListener('click', ()=> amountInput.focus()));
 </script>
 </body>
 </html>
