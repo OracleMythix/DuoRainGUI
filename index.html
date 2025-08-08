@@ -13,22 +13,20 @@
     --bg1:#2e3192; --bg2:#fcb045; --bg3:#00d2ff;
     --accent1:#005bea; --accent2:#002e8a;
     --glass: rgba(255,255,255,0.08);
-    --glass-strong: rgba(255,255,255,0.12);
-    --muted: rgba(255,255,255,0.7);
+    --glass-strong: rgba(255,255,255,0.14);
+    --muted: rgba(255,255,255,0.72);
+    --glass-border: rgba(255,255,255,0.06);
   }
 
   /* animated diagonal gradient background */
-  html,body{
-    height:100%;
-    margin:0;
-  }
+  html,body{ height:100%; margin:0; }
   body{
     font-family: "Inter", "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
     -webkit-font-smoothing:antialiased;
     -moz-osx-font-smoothing:grayscale;
     background: linear-gradient(-45deg, var(--bg1), var(--bg2), var(--bg3), var(--bg1));
     background-size: 400% 400%;
-    animation: gradientShift 24s ease infinite;
+    animation: gradientShift 22s linear infinite;
     display:flex;
     align-items:flex-start;
     justify-content:center;
@@ -59,99 +57,78 @@
     align-items:center;
     gap:18px;
     margin-top:8px;
+    pointer-events: none;
   }
   .logo-image {
-    width:120px;
-    height:120px;
-    flex:0 0 120px;
-    filter: drop-shadow(0 6px 18px rgba(0,0,0,0.25));
+    width:118px;
+    height:118px;
+    flex:0 0 118px;
+    filter: drop-shadow(0 10px 30px rgba(0,0,0,0.35));
+    border-radius: 12px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    padding: 12px;
+    box-sizing: border-box;
   }
-  .title {
-    display:flex;
-    align-items:center;
-    gap:10px;
-  }
+  .title { display:flex; align-items:center; gap:10px; }
   .duo {
     font-family:"Poppins",sans-serif;
-    font-size:56px;
+    font-size:48px;
     font-weight:800;
     letter-spacing:-1px;
     color:#fff;
-    text-shadow:0 6px 18px rgba(0,0,0,0.25);
+    text-shadow:0 8px 24px rgba(0,0,0,0.30);
   }
   .rain {
     font-family:"Poppins",sans-serif;
-    font-size:64px;
+    font-size:58px;
     font-weight:800;
-    background: linear-gradient(to right, var(--accent1), var(--accent2));
+    background: linear-gradient(90deg, var(--accent1), var(--accent2));
     -webkit-background-clip:text;
     -webkit-text-fill-color:transparent;
     position:relative;
     transform:translateY(-2px);
   }
-  /* small shimmer over Rain */
+  /* shimmer over Rain */
   .rain::after{
     content:"";
     position:absolute;
-    left:-40%;
+    left:-50%;
     top:0;
     width:40%;
     height:100%;
     background:linear-gradient(90deg, rgba(255,255,255,0.0), rgba(255,255,255,0.18), rgba(255,255,255,0.0));
     transform:skewX(-20deg);
-    animation: shimmer 4s ease-in-out infinite;
+    animation: shimmer 5s ease-in-out infinite;
     pointer-events:none;
-    opacity:0.9;
+    opacity:0.95;
   }
-  @keyframes shimmer{
-    0%{left:-40%}
-    50%{left:140%}
-    100%{left:-40%}
-  }
+  @keyframes shimmer{ 0%{left:-50%} 50%{left:140%} 100%{left:-50%} }
 
-  /* top control row: menu + spacer */
-  .control-row {
-    width:100%;
-    display:flex;
-    justify-content:flex-end;
-    align-items:center;
-  }
-  .menu-btn {
-    border: none;
-    background: rgba(255,255,255,0.06);
-    color:white;
-    padding:10px 14px;
-    border-radius:12px;
-    font-weight:600;
-    cursor:pointer;
-    backdrop-filter: blur(6px);
-    box-shadow: 0 6px 16px rgba(0,0,0,0.25);
-    transition: transform .18s cubic-bezier(.2,.9,.2,1), box-shadow .2s;
-  }
-  .menu-btn:hover{ transform: translateY(-3px); box-shadow: 0 10px 22px rgba(0,0,0,0.32); }
-  .menu-btn:active{ transform: translateY(0); }
+  /* control row (left empty for balance) */
+  .control-row { width:100%; display:flex; justify-content:flex-end; align-items:center; }
 
-  /* main content card (glass) */
+  /* main card (glass) */
   .card {
     width:100%;
-    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
-    border-radius:20px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+    border-radius:22px;
     padding:28px;
     box-sizing:border-box;
     display:flex;
     flex-direction:column;
     gap:20px;
-    border: 1px solid rgba(255,255,255,0.06);
-    box-shadow: 0 12px 40px rgba(2,6,23,0.35);
-    backdrop-filter: blur(8px);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 20px 60px rgba(2,6,23,0.45);
+    backdrop-filter: blur(10px);
   }
 
-  /* button group */
+  /* farm buttons row */
   .button-group {
     display:flex;
     gap:18px;
     align-items:center;
     justify-content:center;
+    flex-wrap:wrap;
   }
   .farm-button {
     display:flex;
@@ -159,42 +136,48 @@
     gap:12px;
     padding:14px 18px;
     border-radius:12px;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.06);
+    background: rgba(255,255,255,0.035);
+    border: 1px solid rgba(255,255,255,0.04);
     cursor:pointer;
-    transition: transform .16s cubic-bezier(.2,.9,.2,1), box-shadow .16s;
+    transition: transform .18s cubic-bezier(.2,.9,.2,1), box-shadow .18s, background .18s;
     user-select:none;
     min-width:160px;
     justify-content:center;
     font-weight:700;
     letter-spacing:0.2px;
   }
-  .farm-button img{ width:26px; height:26px; filter: drop-shadow(0 6px 14px rgba(0,0,0,0.25)); }
-  .farm-button:hover{ transform: translateY(-6px); box-shadow: 0 18px 40px rgba(0,0,0,0.35); background: rgba(255,255,255,0.06); }
+  .farm-button img{ width:26px; height:26px; filter: drop-shadow(0 8px 20px rgba(0,0,0,0.35)); }
+  .farm-button:hover{ transform: translateY(-6px); box-shadow: 0 20px 50px rgba(0,0,0,0.40); background: rgba(255,255,255,0.06); }
   .farm-button:active{ transform: translateY(-2px); }
+  .farm-button.selected{
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 26px 70px rgba(0,0,0,0.45);
+    background: linear-gradient(90deg, rgba(28,176,246,0.12), rgba(0,94,200,0.08));
+    border: 1px solid rgba(28,176,246,0.25);
+  }
 
-  /* right-floating small-back button (appears in submenu) */
+  /* back button (hidden by default) */
   .back-btn {
     position: absolute;
-    left:20px;
-    top:20px;
+    left:18px;
+    top:18px;
     display:flex;
     align-items:center;
     gap:8px;
     padding:8px 12px;
     border-radius:10px;
-    background: rgba(0,0,0,0.18);
+    background: rgba(0,0,0,0.20);
     color:white;
     border:1px solid rgba(255,255,255,0.06);
     cursor:pointer;
     transform: translateX(-12px);
     opacity:0;
-    transition: transform .32s ease, opacity .2s;
+    transition: transform .28s ease, opacity .18s;
     z-index:40;
   }
   .back-btn.visible { transform: translateX(0); opacity:1; }
 
-  /* dropdown / forms area (glass) */
+  /* input panel */
   .panel {
     display:flex;
     gap:14px;
@@ -203,38 +186,34 @@
     padding:18px;
     border-radius:14px;
     background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-    border: 1px solid rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.035);
     width:100%;
     box-sizing:border-box;
-    transition: transform .28s cubic-bezier(.2,.9,.2,1), opacity .2s ease;
   }
 
-  /* fancy input */
-  .input-wrap{
-    position:relative;
-    width:220px;
-  }
+  .input-wrap{ position:relative; width:260px; }
   .input-wrap input{
     width:100%;
-    padding:12px 14px 12px 44px;
+    padding:12px 14px 12px 48px;
     border-radius:12px;
     border: 1px solid rgba(255,255,255,0.08);
     background: rgba(255,255,255,0.06);
     color:white;
     outline:none;
-    font-weight:600;
+    font-weight:700;
+    font-size:15px;
     transition: box-shadow .18s, transform .12s;
   }
-  .input-wrap input::placeholder{ color: rgba(255,255,255,0.65); font-weight:500; }
-  .input-wrap input:focus{ box-shadow: 0 6px 26px rgba(28,176,246,0.12); border-color: rgba(28,176,246,0.9); transform: translateY(-2px); }
+  .input-wrap input::placeholder{ color: rgba(255,255,255,0.65); font-weight:600; }
+  .input-wrap input:focus{ box-shadow: 0 10px 36px rgba(28,176,246,0.12); border-color: rgba(28,176,246,0.85); transform: translateY(-2px); }
   .input-icon{
     position:absolute;
     left:12px;
     top:50%;
     transform:translateY(-50%);
-    width:20px; height:20px;
-    opacity:0.95;
-    filter: drop-shadow(0 6px 10px rgba(0,0,0,0.25));
+    width:22px; height:22px;
+    opacity:0.98;
+    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.35));
   }
 
   .start-btn {
@@ -243,131 +222,41 @@
     border:none;
     background: linear-gradient(90deg,#1cb0f6,#006edc);
     color:white;
-    font-weight:700;
+    font-weight:800;
+    letter-spacing:0.3px;
     cursor:pointer;
-    transition: transform .14s, box-shadow .18s;
+    transition: transform .14s, box-shadow .18s, opacity .12s;
   }
-  .start-btn:hover{ transform: translateY(-4px); box-shadow: 0 14px 30px rgba(0,110,220,0.28); }
-
-  /* menu overlay (animated) */
-  .menu-overlay {
-    position:fixed;
-    inset:0;
-    display:flex;
-    align-items:flex-start;
-    justify-content:center;
-    pointer-events:none;
-  }
-  .menu-sheet {
-    margin-top:84px;
-    width:420px;
-    max-width:90%;
-    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-    border-radius:16px;
-    border:1px solid rgba(255,255,255,0.06);
-    padding:18px;
-    pointer-events:auto;
-    box-shadow: 0 30px 90px rgba(2,6,23,0.5);
-    transform-origin: top center;
-    transform: translateY(-18px) scale(.98);
-    opacity:0;
-    transition: transform .28s cubic-bezier(.2,.9,.2,1), opacity .28s;
-  }
-  .menu-sheet.visible { transform: translateY(0) scale(1); opacity:1; }
-
-  .menu-item {
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:12px;
-    padding:12px 14px;
-    border-radius:10px;
-    margin-bottom:10px;
-    cursor:pointer;
-    background: rgba(255,255,255,0.02);
-    border: 1px solid rgba(255,255,255,0.03);
-    transition: transform .12s, background .12s;
-  }
-  .menu-item:hover{ transform: translateX(8px); background: rgba(255,255,255,0.035); }
+  .start-btn[disabled]{ opacity: 0.5; cursor: not-allowed; transform: none; }
+  .start-btn:hover:not([disabled]){ transform: translateY(-4px); box-shadow: 0 18px 40px rgba(0,110,220,0.28); }
 
   /* progress area */
-  .progress-area {
-    width:100%;
-    display:flex;
-    flex-direction:column;
-    gap:12px;
-  }
-  .progress-meta{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    font-weight:700;
-    color:var(--muted);
-    font-size:14px;
-  }
-  .progress-meta .label {
-    font-size:15px;
-    color:#fff;
-    font-weight:700;
-  }
-  .progress-meta .sub {
-    font-size:13px;
-    color: rgba(255,255,255,0.78);
-    font-weight:600;
-  }
-  .progress-bar {
-    position:relative;
-    height:18px;
-    width:100%;
-    border-radius:999px;
-    background: rgba(255,255,255,0.06);
-    overflow:hidden;
-  }
-  /* animated gradient stripe inside the fill */
+  .progress-area { width:100%; display:flex; flex-direction:column; gap:12px; }
+  .progress-meta{ display:flex; justify-content:space-between; align-items:center; font-weight:700; color:var(--muted); font-size:14px; }
+  .progress-meta .label { font-size:15px; color:#fff; font-weight:800; letter-spacing:0.2px }
+  .progress-meta .sub { font-size:13px; color: rgba(255,255,255,0.82); font-weight:600; }
+
+  .progress-bar { position:relative; height:20px; width:100%; border-radius:999px; background: rgba(255,255,255,0.06); overflow:hidden; }
   .progress-fill {
-    position:absolute;
-    left:0; top:0; bottom:0;
-    width:0%;
+    position:absolute; left:0; top:0; bottom:0; width:0%;
     border-radius:999px;
-    background: linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
-    box-shadow: 0 8px 30px rgba(0,0,0,0.25) inset;
+    background: linear-gradient(90deg, rgba(0,110,220,0.85), rgba(28,176,246,0.9));
+    box-shadow: 0 10px 40px rgba(0,0,0,0.24) inset;
     transition: width 420ms cubic-bezier(.2,.9,.2,1), box-shadow .2s;
   }
-  .progress-fill::before{
-    content:"";
-    position:absolute;
-    inset:0;
-    background: linear-gradient(270deg, rgba(255,255,255,0.06), rgba(255,255,255,0.002));
-    mix-blend-mode: overlay;
-  }
-  /* moving glossy stripes over the fill */
   .progress-fill .stripes{
-    position:absolute;
-    inset:0;
-    background: repeating-linear-gradient(
-      -45deg,
-      rgba(255,255,255,0.06) 0px,
-      rgba(255,255,255,0.02) 8px,
-      rgba(255,255,255,0.00) 16px
-    );
-    transform: translateX(0);
+    position:absolute; inset:0;
+    background: repeating-linear-gradient(-45deg, rgba(255,255,255,0.06) 0px, rgba(255,255,255,0.02) 8px, transparent 16px);
     animation: stripeMove 3s linear infinite;
-    opacity:0.55;
+    opacity:0.45;
   }
-  @keyframes stripeMove{
-    from{ transform: translateX(0); }
-    to{ transform: translateX(-32px); }
-  }
+  @keyframes stripeMove{ from{ transform: translateX(0);} to{ transform: translateX(-32px);} }
+
+  .progress-pulse { animation: pulse 420ms ease; }
+  @keyframes pulse { 0%{ transform: scaleX(1); } 50%{ transform: scaleX(1.02); } 100%{ transform: scaleX(1); } }
 
   /* tiny footer */
-  .foot {
-    width:100%;
-    display:flex;
-    justify-content:center;
-    color: rgba(255,255,255,0.6);
-    font-size:13px;
-    padding-top:8px;
-  }
+  .foot { width:100%; display:flex; justify-content:center; color: rgba(255,255,255,0.6); font-size:13px; padding-top:8px; }
 
   /* responsive tweaks */
   @media (max-width:720px){
@@ -375,21 +264,20 @@
     .duo{ font-size:36px; }
     .rain{ font-size:44px; }
     .button-group{ flex-direction:column; gap:12px; }
+    .input-wrap{ width:180px; }
   }
 </style>
 </head>
 <body>
   <div class="shell">
-    <div class="control-row">
-      <button class="menu-btn" id="menuBtn">☰ Menu</button>
-    </div>
+    <div class="control-row"></div>
 
     <div style="position:relative; width:100%;">
       <button class="back-btn" id="backBtn" title="Back">← Back</button>
 
-      <div class="logo-row">
+      <div class="logo-row" aria-hidden="true">
         <img class="logo-image" src="assets/rain-thunder-cloud.png" alt="cloud">
-        <div class="title" aria-hidden="true">
+        <div class="title">
           <div class="duo">Duo</div>
           <div class="rain">Rain</div>
         </div>
@@ -399,15 +287,15 @@
       <div class="card" id="homeCard" role="region" aria-label="Main controls">
         <div style="display:flex;flex-direction:column;gap:14px;align-items:center;">
           <div class="button-group" role="tablist" aria-label="Farming actions">
-            <div class="farm-button" data-mode="xp" id="xpBtn">
+            <div class="farm-button" data-mode="xp" id="xpBtn" aria-pressed="false">
               <img src="assets/xp.svg" alt="">
               XP Farm
             </div>
-            <div class="farm-button" data-mode="gem" id="gemBtn">
+            <div class="farm-button" data-mode="gem" id="gemBtn" aria-pressed="false">
               <img src="assets/gems.svg" alt="">
               Gem Farm
             </div>
-            <div class="farm-button" data-mode="streak" id="streakBtn">
+            <div class="farm-button" data-mode="streak" id="streakBtn" aria-pressed="false">
               <img src="assets/streak.svg" alt="">
               Streak Farm
             </div>
@@ -416,9 +304,9 @@
           <div class="panel" id="inputPanel" aria-hidden="false">
             <div class="input-wrap" style="margin-right:12px;">
               <img class="input-icon" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' fill='white' viewBox='0 0 24 24'><path d='M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 14.5v-5h-2v5h2zm0-7.5V6h-2v3H11z'/></svg>" alt="">
-              <input id="amount" type="number" min="1" value="10" placeholder="Enter loops / days">
+              <input id="amount" type="number" min="1" value="10" placeholder="Enter loops / days" />
             </div>
-            <button class="start-btn" id="startBtn">Start Farming</button>
+            <button class="start-btn" id="startBtn" title="Start">Start Farming</button>
           </div>
         </div>
 
@@ -442,188 +330,116 @@
     <div class="foot">DuoRain • Automated tools — use responsibly</div>
   </div>
 
-  <!-- menu overlay -->
-  <div class="menu-overlay" id="menuOverlay" aria-hidden="true">
-    <div class="menu-sheet" id="menuSheet" role="dialog" aria-modal="true" aria-label="Menu">
-      <div class="menu-item" id="menuFarms">
-        <div style="display:flex;gap:12px;align-items:center">
-          <div style="width:36px;height:36px;border-radius:8px;background:linear-gradient(90deg,#1cb0f6,#006edc);display:flex;align-items:center;justify-content:center;font-weight:800">F</div>
-          <div style="font-weight:700">Farms</div>
-        </div>
-        <div style="color:rgba(255,255,255,0.6)">XP • Gems • Streak</div>
-      </div>
-
-      <div class="menu-item" id="menuOther">
-        <div style="display:flex;gap:12px;align-items:center">
-          <div style="width:36px;height:36px;border-radius:8px;background:linear-gradient(90deg,#ffd36b,#ff7a7a);display:flex;align-items:center;justify-content:center;font-weight:800">+</div>
-          <div style="font-weight:700">Extras</div>
-        </div>
-        <div style="color:rgba(255,255,255,0.6)">Future features</div>
-      </div>
-
-      <div style="height:8px"></div>
-      <div style="display:flex;gap:10px;justify-content:flex-end">
-        <button class="menu-btn" id="closeMenu">Close</button>
-      </div>
-    </div>
-  </div>
-
+<!-- QWebChannel for PySide6 in-app bridge -->
 <script src="qrc:///qtwebchannel/qwebchannel.js"></script>
 <script>
-  // UI state & helpers
-  const menuBtn = document.getElementById('menuBtn');
-  const menuOverlay = document.getElementById('menuOverlay');
-  const menuSheet = document.getElementById('menuSheet');
-  const closeMenu = document.getElementById('closeMenu');
-  const menuFarms = document.getElementById('menuFarms');
+  // Elements
   const backBtn = document.getElementById('backBtn');
-
   const xpBtn = document.getElementById('xpBtn');
   const gemBtn = document.getElementById('gemBtn');
   const streakBtn = document.getElementById('streakBtn');
   const startBtn = document.getElementById('startBtn');
   const amountInput = document.getElementById('amount');
-
   const progressFill = document.getElementById('progressFill');
   const progressLabel = document.getElementById('progressLabel');
   const progressSub = document.getElementById('progressSub');
 
   let currentMode = null;
   let jsBackend = null;
+  let lastProgress = 0;
 
-  // menu toggles
-  menuBtn.addEventListener('click', ()=> {
-    menuOverlay.style.pointerEvents = 'auto';
-    menuSheet.classList.add('visible');
-    menuOverlay.setAttribute('aria-hidden','false');
-  });
-  closeMenu.addEventListener('click', ()=> {
-    menuSheet.classList.remove('visible');
-    setTimeout(()=> menuOverlay.style.pointerEvents='none', 300);
-    menuOverlay.setAttribute('aria-hidden','true');
-  });
-
-  // open Farms submenu (animated transition)
-  menuFarms.addEventListener('click', ()=> {
-    // slide out menu and show farms as small overlay using same menu sheet area
-    menuSheet.classList.remove('visible');
-    setTimeout(()=> {
-      // change content to farms menu
-      menuSheet.innerHTML = `
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-          <div style="font-weight:800">Farms</div>
-          <div style="color:rgba(255,255,255,0.6)">XP • Gems • Streak</div>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:10px;">
-          <div class="menu-item" id="m_xp"><div style="font-weight:700">XP Farm</div><div style="color:rgba(255,255,255,0.6)">Loop XP story</div></div>
-          <div class="menu-item" id="m_gem"><div style="font-weight:700">Gem Farm</div><div style="color:rgba(255,255,255,0.6)">Redeem rewards</div></div>
-          <div class="menu-item" id="m_streak"><div style="font-weight:700">Streak Farm</div><div style="color:rgba(255,255,255,0.6)">Simulate practice</div></div>
-        </div>
-        <div style="height:8px"></div>
-        <div style="display:flex;gap:10px;justify-content:flex-end">
-          <button class="menu-btn" id="menuBackInline">Back</button>
-        </div>
-      `;
-      // show the sheet again
-      menuSheet.classList.add('visible');
-      // wire the new inline buttons (delegation)
-      setTimeout(()=> {
-        document.getElementById('m_xp').addEventListener('click', ()=> { openSubFromMenu('xp'); });
-        document.getElementById('m_gem').addEventListener('click', ()=> { openSubFromMenu('gem'); });
-        document.getElementById('m_streak').addEventListener('click', ()=> { openSubFromMenu('streak'); });
-        document.getElementById('menuBackInline').addEventListener('click', ()=> {
-          // restore original menu
-          menuSheet.classList.remove('visible');
-          setTimeout(()=> location.reload(), 220);
-        });
-      }, 80);
-    }, 260);
-  });
-
-  function openSubFromMenu(mode){
-    // hide menu and show home in the selected mode
-    menuSheet.classList.remove('visible');
-    setTimeout(()=> menuOverlay.style.pointerEvents='none', 300);
-    currentMode = mode;
-    // show a visual highlight on the button
-    document.querySelectorAll('.farm-button').forEach(b=> b.style.transform='translateY(0)');
-    const btn = document.querySelector(`.farm-button[data-mode="${mode}"]`);
-    if(btn) btn.style.transform='translateY(-8px) scale(1.02)';
-    showBack();
-    // set amount placeholder text to be contextual
-    amountInput.placeholder = mode === 'streak' ? 'Enter days to farm' : 'Enter loops to farm';
+  // Utility: clear selection
+  function clearSelection(){
+    document.querySelectorAll('.farm-button').forEach(b=>{
+      b.classList.remove('selected');
+      b.setAttribute('aria-pressed','false');
+    });
   }
 
-  function showBack(){
-    backBtn.classList.add('visible');
-  }
+  // Farm button clicks -> set mode & visual hint
+  [xpBtn, gemBtn, streakBtn].forEach(btn=>{
+    btn.addEventListener('click', ()=> {
+      currentMode = btn.dataset.mode;
+      clearSelection();
+      btn.classList.add('selected');
+      btn.setAttribute('aria-pressed','true');
+      backBtn.classList.add('visible');
+      amountInput.placeholder = currentMode === 'streak' ? 'Enter days to farm' : 'Enter loops to farm';
+      amountInput.focus();
+    });
+  });
+
+  // Back button -> reset
   backBtn.addEventListener('click', ()=> {
-    // hide back and reset UI
-    backBtn.classList.remove('visible');
     currentMode = null;
+    clearSelection();
+    backBtn.classList.remove('visible');
     amountInput.placeholder = 'Enter loops / days';
-    document.querySelectorAll('.farm-button').forEach(b=> b.style.transform='translateY(0)');
   });
 
-  // clicking main farm buttons sets current mode (quick)
-  xpBtn.addEventListener('click', ()=> { currentMode='xp'; showBack(); amountInput.placeholder='Enter loops to farm';});
-  gemBtn.addEventListener('click', ()=> { currentMode='gem'; showBack(); amountInput.placeholder='Enter loops to farm';});
-  streakBtn.addEventListener('click', ()=> { currentMode='streak'; showBack(); amountInput.placeholder='Enter days to farm';});
-
-  // start button
+  // Start button -> call backend.start(mode, count)
   startBtn.addEventListener('click', ()=> {
     const value = Math.max(1, parseInt(amountInput.value) || 1);
     if(!currentMode){
-      // small shake to indicate user must choose mode
+      // quick shake to indicate mode missing
       startBtn.animate([{ transform:'translateX(-6px)'},{ transform:'translateX(6px)'},{ transform:'translateX(0)'}], { duration:300 });
       return;
     }
-    // call the backend slot
-    try{
-      if(jsBackend && typeof jsBackend.start === 'function'){
-        jsBackend.start(currentMode, value);
-      } else {
-        console.warn('backend not connected yet');
-      }
-    }catch(e){ console.error(e); }
+    if(window.backend && typeof window.backend.start === 'function'){
+      try { window.backend.start(currentMode, value); }
+      catch(e){ console.error('Failed to call backend.start:', e); }
+    } else {
+      console.warn('backend not connected (page opened in normal browser?)');
+    }
   });
 
-  // progress update handler
+  // Update progress from backend (current, total, rate)
   function handleProgress(current, total, rate){
-    const pct = (total && current) ? Math.min(100, Math.round((current/total)*100)) : 0;
-    progressFill.style.width = pct + '%';
+    // protect against bad values
+    current = Number(current) || 0;
+    total = Number(total) || 0;
+    rate = Number(rate) || 0;
+
     progressLabel.textContent = `${current} / ${total}`;
     progressSub.textContent = `${rate.toFixed(2)} /sec`;
-    // small glow when progress increases
-    progressFill.style.boxShadow = '0 8px 40px rgba(0,110,220,0.18) inset';
+
+    const pct = total > 0 ? Math.min(100, Math.round((current / total) * 100)) : 0;
+    progressFill.style.width = pct + '%';
+
+    // pulse animation when progress increases
+    if(current > lastProgress){
+      progressFill.classList.add('progress-pulse');
+      clearTimeout(window._pulseT);
+      window._pulseT = setTimeout(()=> progressFill.classList.remove('progress-pulse'), 420);
+    }
+    lastProgress = current;
+
+    // subtle glow reset
+    progressFill.style.boxShadow = '0 10px 40px rgba(0,0,0,0.24) inset';
     clearTimeout(window._glowT);
-    window._glowT = setTimeout(()=> progressFill.style.boxShadow = '0 8px 30px rgba(0,0,0,0.25) inset', 380);
+    window._glowT = setTimeout(()=> progressFill.style.boxShadow = '0 8px 30px rgba(0,0,0,0.25) inset', 600);
   }
 
-  // Wire QWebChannel
+  // QWebChannel wiring (works inside PySide6 QWebEngine)
   document.addEventListener("DOMContentLoaded", ()=>{
     if(typeof QWebChannel === 'undefined'){
-      console.warn('QWebChannel not available (page may be opened in normal browser).');
+      console.info('QWebChannel not available (opening in browser). Backend calls will be disabled.');
       return;
     }
     new QWebChannel(qt.webChannelTransport, function(channel){
       jsBackend = channel.objects.backend;
-      // ensure signature: current, total, rate
+      window.backend = jsBackend;
       if(jsBackend && jsBackend.updateProgress){
         jsBackend.updateProgress.connect(function(current, total, rate){
+          // forwards to safe handler
           handleProgress(current, total, rate);
         });
       }
     });
   });
 
-  // small: allow clicking farm button to auto-focus amount and visually hint
-  document.querySelectorAll('.farm-button').forEach(b=>{
-    b.addEventListener('click', ()=> {
-      amountInput.focus();
-    });
-  });
-
+  // UX: clicking any farm button will focus the amount field
+  document.querySelectorAll('.farm-button').forEach(b => b.addEventListener('click', ()=> amountInput.focus()));
 </script>
 </body>
 </html>
