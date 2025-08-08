@@ -97,7 +97,7 @@
   }
   .duo {
     font-family: "Poppins", sans-serif;
-    font-size: 48px;
+    font-size: 72px;
     font-weight: 800;
     letter-spacing: -1px;
     color: #fff;
@@ -105,43 +105,14 @@
   }
   .rain {
     font-family: "Poppins", sans-serif;
-    font-size: 58px;
+    font-size: 88px;
     font-weight: 800;
     background: linear-gradient(90deg, var(--accent1), var(--accent2));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     position: relative;
     transform: translateY(-2px);
-  }
-  /* shimmer over Rain */
-  .rain::after {
-    content: "";
-    position: absolute;
-    left: -50%;
-    top: 0;
-    width: 40%;
-    height: 100%;
-    background: linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 0),
-      rgba(255, 255, 255, 0.18),
-      rgba(255, 255, 255, 0)
-    );
-    transform: skewX(-20deg);
-    animation: shimmer 5s ease-in-out infinite;
-    pointer-events: none;
-    opacity: 0.95;
-  }
-  @keyframes shimmer {
-    0% {
-      left: -50%;
-    }
-    50% {
-      left: 140%;
-    }
-    100% {
-      left: -50%;
-    }
+    /* Removed shimmer effect */
   }
 
   /* Farm Status Button - top left */
@@ -326,14 +297,24 @@
     box-shadow: 0 18px 40px rgba(0, 110, 220, 0.28);
   }
 
-  /* Progress area */
+  /* Progress area - initially hidden */
   .progress-area {
     width: 100%;
     display: flex;
     flex-direction: column;
     gap: 14px;
     align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    max-height: 0;
+    transition: opacity 0.4s ease, max-height 0.4s ease;
   }
+  .progress-area.visible {
+    opacity: 1;
+    pointer-events: auto;
+    max-height: 140px; /* enough for the content */
+  }
+
   .progress-meta {
     display: flex;
     justify-content: space-between;
@@ -439,10 +420,10 @@
       height: 92px;
     }
     .duo {
-      font-size: 36px;
+      font-size: 48px;
     }
     .rain {
-      font-size: 44px;
+      font-size: 56px;
     }
     #farmButtonsGroup {
       flex-direction: column;
@@ -479,7 +460,14 @@
     </div>
 
     <!-- Farm Status Button -->
-    <button id="farmStatusBtn" aria-live="polite" aria-atomic="true" aria-label="Farm Status">
+    <button
+      id="farmStatusBtn"
+      aria-live="polite"
+      aria-atomic="true"
+      aria-label="Farm Status"
+      title="Farm Status"
+      role="button"
+    >
       Farm Status
       <div class="status-dot" id="statusDot"></div>
     </button>
@@ -550,12 +538,12 @@
         </div>
         <button id="startBtn" disabled>Start Farming</button>
 
-        <div class="progress-area" aria-live="polite" aria-atomic="true">
+        <div class="progress-area" aria-live="polite" aria-atomic="true" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
           <div class="progress-meta">
             <div class="label" id="progressLabel">Progress</div>
             <div class="sub" id="progressPercent">0%</div>
           </div>
-          <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          <div class="progress-bar">
             <div class="progress-fill" id="progressFill">
               <div class="stripes"></div>
             </div>
@@ -579,6 +567,7 @@
       const progressLabel = document.getElementById("progressLabel");
       const statusDot = document.getElementById("statusDot");
       const farmStatusBtn = document.getElementById("farmStatusBtn");
+      const progressArea = inputScreen.querySelector(".progress-area");
 
       let currentFarmMode = null;
       let farmingRunning = false;
@@ -618,6 +607,8 @@
         progressFill.style.width = "0%";
         progressFill.classList.remove("progress-pulse");
         progressPercent.textContent = "0%";
+        progressLabel.textContent = "Progress";
+        progressArea.classList.remove("visible");
       }
 
       // Simulate farming progress for demo
@@ -630,6 +621,7 @@
 
         progressLabel.textContent = "Farming in progress...";
         progressFill.classList.add("progress-pulse");
+        progressArea.classList.add("visible");
 
         progressInterval = setInterval(() => {
           if (progressValue >= 100) {
@@ -673,6 +665,7 @@
           // Animate screens
           farmMenuScreen.classList.remove("visible");
           farmMenuScreen.classList.add("hidden");
+          farmStatusBtn.style.display = "none"; // hide farm status on input screen
           setTimeout(() => {
             inputScreen.classList.remove("hidden");
             inputScreen.classList.add("visible");
@@ -699,6 +692,7 @@
 
         inputScreen.classList.remove("visible");
         inputScreen.classList.add("hidden");
+        farmStatusBtn.style.display = "flex"; // show farm status on menu screen
         setTimeout(() => {
           farmMenuScreen.classList.remove("hidden");
           farmMenuScreen.classList.add("visible");
