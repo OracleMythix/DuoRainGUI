@@ -233,7 +233,8 @@
 
   display: flex;
   flex-direction: column;
-  justify-content: center; 
+  justify-content: center;
+  justify-self: center;
   align-items: center; 
   gap: 24px;
   width: 100%;
@@ -439,6 +440,23 @@
       max-width: 300px;
     }
   }
+
+/* === Added centering for input panel under back button === */
+#inputScreen {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  justify-items: center;
+}
+
+#backBtnInput {
+  justify-self: start;
+  margin-bottom: 20px;
+}
+
+#inputPanel {
+  justify-self: center;
+}
+
 </style>
 </head>
 <body>
