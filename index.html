@@ -112,34 +112,7 @@
   position: relative;
   transform: translateY(-2px);
 }
-  /* Farm Status Button - top left */
-  #farmStatusBtn {
-    position: absolute;
-    top: 26px;
-    left: 26px;
-    background: var(--glass);
-    border: 1px solid var(--glass-border);
-    border-radius: 12px;
-    padding: 8px 14px;
-    font-weight: 700;
-    font-family: "Poppins", sans-serif;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    user-select: none;
-    backdrop-filter: blur(8px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-    z-index: 50;
-  }
-  #farmStatusBtn .status-dot {
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    background: red;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-    transition: background-color 0.3s ease;
-  }
+  
 
   /* Screens container */
   .screen {
@@ -489,18 +462,7 @@
       />
     </div>
 
-    <!-- Farm Status Button -->
-    <button
-      id="farmStatusBtn"
-      aria-live="polite"
-      aria-atomic="true"
-      aria-label="Farm Status"
-      title="Farm Status"
-      role="button"
-    >
-      Farm Status
-      <div class="status-dot" id="statusDot"></div>
-    </button>
+    
 
     <!-- Farm Menu Screen -->
     <section
@@ -583,9 +545,6 @@
     </section>
   </div>
 
-  <!-- The QWebChannel script is not loaded by default in browsers.
-       We dynamically load it only when the Qt 'qt' object is present
-       (i.e. when the page is running inside your PySide6 QWebEngineView). -->
   <script>
     (() => {
       const farmButtons = document.querySelectorAll(".farm-button");
@@ -598,17 +557,12 @@
       const progressFill = document.getElementById("progressFill");
       const progressPercent = document.getElementById("progressPercent");
       const progressLabel = document.getElementById("progressLabel");
-      const statusDot = document.getElementById("statusDot");
-      const farmStatusBtn = document.getElementById("farmStatusBtn");
       const progressArea = inputScreen.querySelector(".progress-area");
 
       let currentFarmMode = null;
       let farmingRunning = false;
       let progressValue = 0;
       let progressInterval = null;
-
-      // Whether we've connected the QWebChannel backend signals
-      let backendConnected = false;
 
       // Icons map for input screen
       const iconMap = {
@@ -625,13 +579,9 @@
       };
 
       // Update farm status dot color
-      function updateFarmStatusDot() {
-        if (farmingRunning) {
-          statusDot.style.backgroundColor = "#22c55e"; // green
-          farmStatusBtn.setAttribute("aria-label", "Farm Status: Running");
-        } else {
+       else {
           statusDot.style.backgroundColor = "#ef4444"; // red
-          farmStatusBtn.setAttribute("aria-label", "Farm Status: Not Running");
+          
         }
       }
 
@@ -645,14 +595,10 @@
         progressPercent.textContent = "0%";
         progressLabel.textContent = "Progress";
         progressArea.classList.remove("visible");
-        if (progressInterval) {
-          clearInterval(progressInterval);
-          progressInterval = null;
-        }
       }
 
-      // Simulate farming progress for demo (fallback when no backend)
-      function startFarmingSimulated() {
+      // Simulate farming progress for demo
+      function startFarming() {
         if (farmingRunning) return;
         farmingRunning = true;
         updateFarmStatusDot();
@@ -663,11 +609,9 @@
         progressFill.classList.add("progress-pulse");
         progressArea.classList.add("visible");
 
-        // simple simulated progression
         progressInterval = setInterval(() => {
           if (progressValue >= 100) {
             clearInterval(progressInterval);
-            progressInterval = null;
             farmingRunning = false;
             updateFarmStatusDot();
             startBtn.disabled = false;
@@ -680,82 +624,8 @@
           if (progressValue > 100) progressValue = 100;
           progressFill.style.width = progressValue + "%";
           progressPercent.textContent = progressValue + "%";
+          progressFill.setAttribute("aria-valuenow", progressValue);
         }, 450);
-      }
-
-      // Called when backend emits progress via QWebChannel
-      function onBackendProgress(current, total, rate) {
-        // guard division by zero
-        const pct = total > 0 ? Math.round((current / total) * 100) : 0;
-        progressValue = pct;
-        progressFill.style.width = pct + "%";
-        progressPercent.textContent = pct + "%";
-        progressLabel.textContent = `${current}/${total}`;
-
-        // when done
-        if (current >= total) {
-          farmingRunning = false;
-          updateFarmStatusDot();
-          startBtn.disabled = false;
-          farmInput.disabled = false;
-          progressFill.classList.remove("progress-pulse");
-          progressLabel.textContent = "Farming complete!";
-        } else {
-          // ensure the visible state is set
-          progressArea.classList.add("visible");
-        }
-      }
-
-      // Setup bindings for a discovered backend object
-      function setupBackendBindings() {
-        if (!window.backend) return;
-        backendConnected = true;
-        try {
-          if (window.backend.updateProgress && typeof window.backend.updateProgress.connect === "function") {
-            window.backend.updateProgress.connect(function (current, total, rate) {
-              // When signals come from Python land, update the UI
-              onBackendProgress(current, total, rate);
-            });
-          }
-        } catch (e) {
-          console.warn("Failed to connect backend.updateProgress:", e);
-        }
-      }
-
-      // Try loading qwebchannel when running inside Qt (the qt object exists)
-      if (typeof qt !== "undefined") {
-        // If QWebChannel isn't already present, inject the qwebchannel script from the Qt resource path.
-        if (typeof QWebChannel === "undefined") {
-          const s = document.createElement("script");
-          s.src = "qrc:///qtwebchannel/qwebchannel.js";
-          s.onload = function () {
-            try {
-              new QWebChannel(qt.webChannelTransport, function (channel) {
-                window.backend = channel.objects.backend;
-                setupBackendBindings();
-              });
-            } catch (e) {
-              console.warn("QWebChannel init failed:", e);
-            }
-          };
-          s.onerror = function () {
-            console.warn("Could not load qwebchannel.js from qrc.");
-          };
-          document.head.appendChild(s);
-        } else {
-          // QWebChannel already present
-          try {
-            new QWebChannel(qt.webChannelTransport, function (channel) {
-              window.backend = channel.objects.backend;
-              setupBackendBindings();
-            });
-          } catch (e) {
-            console.warn("QWebChannel init failed:", e);
-          }
-        }
-      } else {
-        // Not running in Qt: no backend available — that's fine, simulation will be used.
-        console.log("Not running inside PySide6 WebEngine (no Qt 'qt' object). Using simulated mode.");
       }
 
       // Event: farm button click on main menu
@@ -781,7 +651,7 @@
           // Animate screens
           farmMenuScreen.classList.remove("visible");
           farmMenuScreen.classList.add("hidden");
-          farmStatusBtn.style.display = "none"; // hide farm status on input screen
+           // hide farm status on input screen
           setTimeout(() => {
             inputScreen.classList.remove("hidden");
             inputScreen.classList.add("visible");
@@ -797,20 +667,9 @@
 
         // Stop farming if running
         if (farmingRunning) {
-          if (window.backend && backendConnected && typeof window.backend.stop === "function") {
-            try {
-              window.backend.stop();
-            } catch (e) {
-              console.warn("backend.stop() failed:", e);
-            }
-          } else {
-            if (progressInterval) {
-              clearInterval(progressInterval);
-              progressInterval = null;
-            }
-            farmingRunning = false;
-            updateFarmStatusDot();
-          }
+          clearInterval(progressInterval);
+          farmingRunning = false;
+          updateFarmStatusDot();
         }
 
         resetProgress();
@@ -819,7 +678,7 @@
 
         inputScreen.classList.remove("visible");
         inputScreen.classList.add("hidden");
-        farmStatusBtn.style.display = "flex"; // show farm status on menu screen
+         // show farm status on menu screen
         setTimeout(() => {
           farmMenuScreen.classList.remove("hidden");
           farmMenuScreen.classList.add("visible");
@@ -834,33 +693,7 @@
       // Start farming button click
       startBtn.addEventListener("click", () => {
         if (farmingRunning) return;
-
-        const raw = farmInput.value.trim();
-        const count = parseInt(raw, 10);
-        if (!raw || isNaN(count) || count <= 0) return;
-
-        // If a Qt backend is connected, call it; otherwise use the simulated start
-        if (window.backend && typeof window.backend.start === "function" && backendConnected) {
-          try {
-            // mark UI as running — updates will come from backend.updateProgress
-            farmingRunning = true;
-            updateFarmStatusDot();
-            startBtn.disabled = true;
-            farmInput.disabled = true;
-            progressLabel.textContent = "Farming in progress...";
-            progressFill.classList.add("progress-pulse");
-            progressArea.classList.add("visible");
-
-            // call Python backend
-            window.backend.start(currentFarmMode, count);
-          } catch (e) {
-            console.warn("Calling backend.start failed, falling back to simulated:", e);
-            startFarmingSimulated();
-          }
-        } else {
-          // no backend available — run simulated
-          startFarmingSimulated();
-        }
+        startFarming();
       });
 
       // Farm Status button click (just toggle back to menu)
