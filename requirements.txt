@@ -1,0 +1,6 @@
+requests
+colorama
+PySide6
+PySide6-Addons
+PySide6-Essentials
+PySide6-WebEngine
