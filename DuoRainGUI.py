@@ -10,7 +10,7 @@ from PySide6.QtWebEngineCore import QWebEngineSettings
 
 colorama_init(autoreset=True)
 CONFIG_FILE = "config.json"
-#---Speed---
+#----Speed----
 SLEEP_TIME = 0
 
 CHALLENGE_TYPES = [
